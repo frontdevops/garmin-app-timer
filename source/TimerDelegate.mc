@@ -9,19 +9,28 @@ using Toybox.Timer as Timer;
 
 class InputDelegate extends Ui.BehaviorDelegate {
 
-	var state1 = 0;
-	var state2 = 0;
-	var timer2;
+	private var state1 = 0;
+	private var state2 = 0;
+	private var timer2;
+
+	private function timer_2() {
+		timer2.stop();
+		state2 = 0;
+	}
 
     function initialize() {
         Ui.BehaviorDelegate.initialize();
         timer2 = new Timer.Timer();
     }
 
-	function timer_2() {
-		timer2.stop();
-		state2 = 0;
-	}
+    function onMenu() {
+        var menu = new Ui.Menu();
+        menu.setTitle("About");
+        menu.addItem("garmin.new.hr", :r1);        
+        var delegate = new TimerMenuDelegate();
+        Ui.pushView(menu, delegate, Ui.SLIDE_RIGHT);
+        return true;
+    }
 
     function onTap(clickEvent) {
         //System.println(clickEvent.getCoordinates()); // e.g. [36, 40]
@@ -39,10 +48,9 @@ class InputDelegate extends Ui.BehaviorDelegate {
     }
 
     function onKey(keyEvent) {
-        //System.println(keyEvent.getKey()); // e.g. KEY_MENU = 7
-        
+        //System.println(keyEvent.getKey()); // e.g. KEY_MENU = 7        
         state2 += 1;
-        timer2.start(method(:timer_2), 3000, true);
+        timer2.start(method(:timer_2), 2000, true);
 
     	switch (state2) {
     		case 2:
@@ -59,7 +67,4 @@ class InputDelegate extends Ui.BehaviorDelegate {
     	}        
     }
 
-    function onMenu() {
-        return true;
-    }
 }

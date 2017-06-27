@@ -1,0 +1,11 @@
+info face="Arial Rounded MT Bold" size=26 bold=1 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1 outline=0
+common lineHeight=26 base=21 scaleW=256 scaleH=256 pages=1 packed=0 alphaChnl=1 redChnl=0 greenChnl=0 blueChnl=0
+page id=0 file="custom.png"
+chars count=4
+char id=65   x=0     y=0     width=17    height=16    xoffset=0     yoffset=5     xadvance=17    page=0  chnl=15
+char id=66   x=18    y=0     width=16    height=16    xoffset=1     yoffset=5     xadvance=17    page=0  chnl=15
+char id=72   x=50    y=0     width=18    height=16    xoffset=1     yoffset=5     xadvance=18    page=0  chnl=15
+char id=80   x=35    y=0     width=15    height=16    xoffset=1     yoffset=5     xadvance=16    page=0  chnl=15
+kernings count=2
+kerning first=80  second=65  amount=-2  
+kerning first=66  second=65  amount=-1  

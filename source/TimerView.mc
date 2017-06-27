@@ -7,6 +7,9 @@
 using Toybox.WatchUi as Ui;
 using Toybox.Graphics as Gfx;
 using Toybox.Timer as Timer;
+using Toybox.System;
+using Toybox.Math;
+//using Toybox.Sensor;
 
 var timer1;
 var seconds = 0;
@@ -24,11 +27,9 @@ function timer_1() {
         if (seconds > 59) {
         	seconds = 0;
         	++minutes;
-        	
 	    	if (minutes > 59) {
     			minutes = 0;
-    			++hour;
-    			
+    			++hour;    			
     			if (hour == 24) {
     				timer1.stop();
     			}
@@ -39,22 +40,34 @@ function timer_1() {
     Ui.requestUpdate();
 }
 
+
 class TimerView extends Ui.View {
 
-	var screenHeight;
-	var screenWidth;
-	var screenCenterH;
-	var screenCenterV;
+	var customFont = null;
+	//var heartRate = 0;
+
+	private var screenHeight;
+	private var screenWidth;
+	private var screenCenterH;
+	private var screenCenterV;
 
     function initialize() {
         Ui.View.initialize();
         
+        //Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE]);
+    	//Sensor.enableSensorEvents(method(:onSensor));
+
         timer1 = new Timer.Timer();
     }
-
-
-
+/*    
+    function onSensor(sensorInfo) {
+    	heartRate = sensorInfo.heartRate;
+    	System.println("Heart Rate: " + heartRate);
+	}
+//*/
     function onLayout(dc) {
+    	customFont = Ui.loadResource(Rez.Fonts.customFont);
+    
         screenHeight = dc.getHeight();
         screenWidth  = dc.getWidth();
         screenCenterH = (screenHeight /2) -45;
@@ -64,6 +77,36 @@ class TimerView extends Ui.View {
         timer1.start(method(:timer_1), 100, true);
     }
 
+
+	function drawStatusBar(dc) {
+		var settings = System.getDeviceSettings();
+
+   		dc.setColor(Gfx.COLOR_DK_BLUE, Gfx.COLOR_TRANSPARENT);
+
+/*
+   		dc.drawText(100, 0, customFont, "H",  Gfx.TEXT_JUSTIFY_LEFT);
+   		dc.drawText(
+   			118, 2,
+   			Gfx.FONT_SMALL,
+   			(heartRate == null ? "pls" : heartRate.format("%d")),
+   			Gfx.TEXT_JUSTIFY_LEFT
+   		);
+//*/
+
+	   	if (settings.phoneConnected) {
+   		   	dc.drawText(133, 0, customFont, "B",  Gfx.TEXT_JUSTIFY_LEFT);
+	   	}
+   		
+		var battery = System.getSystemStats().battery;
+		dc.drawText(120, 2, Gfx.FONT_SMALL, battery.format("%d"), Gfx.TEXT_JUSTIFY_RIGHT);
+   		dc.drawText(135, 0, customFont, "P",  Gfx.TEXT_JUSTIFY_RIGHT);
+	   	
+	   	if (settings.notificationCount > 0) {
+	   		dc.drawText(133, 20, customFont, "A",  Gfx.TEXT_JUSTIFY_LEFT);
+	   	}
+	}
+
+
     function onUpdate(dc) {
 
         var string;
@@ -71,35 +114,59 @@ class TimerView extends Ui.View {
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_BLACK);
         dc.clear();
 
-        string = (hour < 10) ? "0" + hour : hour;
-        
-        dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
-        dc.drawText(screenCenterV, screenCenterH -60, Gfx.FONT_NUMBER_THAI_HOT, string, Gfx.TEXT_JUSTIFY_LEFT);
+        dc.setColor(
+        	hour < 1 ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_DK_BLUE,
+        	Gfx.COLOR_TRANSPARENT
+    	);
+        dc.drawText(
+    		screenCenterV, screenCenterH -60,
+    		Gfx.FONT_NUMBER_THAI_HOT,
+    		hour.format("%02d"),
+    		Gfx.TEXT_JUSTIFY_LEFT
+		);
+        dc.drawText(
+    		screenCenterV +50, screenCenterH -20,
+    		Gfx.FONT_SYSTEM_MEDIUM,
+    		"h",
+    		Gfx.TEXT_JUSTIFY_LEFT
+		);
 
-		string = (minutes < 10) ? "0" : "";
-		string += minutes + ":";
-		string += (seconds < 10) ? "0" : "";
-        string += seconds;
-
-		dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
-        dc.drawText(screenCenterV, screenCenterH, Gfx.FONT_NUMBER_THAI_HOT, string, Gfx.TEXT_JUSTIFY_LEFT);
+		dc.setColor(
+			hour < 1 ? Gfx.COLOR_WHITE : Gfx.COLOR_ORANGE,
+			Gfx.COLOR_TRANSPARENT
+		);
+        dc.drawText(
+        	screenCenterV, screenCenterH,
+        	Gfx.FONT_NUMBER_THAI_HOT,
+        	minutes.format("%02d") + ":" + seconds.format("%02d"),
+    		Gfx.TEXT_JUSTIFY_LEFT
+		);
         
-        switch (mseconds) {
-        	case 10: string = "12"; break;
-        	case 30: string = "34"; break;
-        	case 50: string = "56"; break;
-        	case 70: string = "78"; break;
-        	case 90: string = "91"; break;
-    		default:
-    			string = mseconds;
+		var s = (mseconds + "").substring(0,1);
+        if (s.toNumber() % 2 != 0) {
+        	string = s + (Math.rand() + "").substring(0,1);  
         }
+        else {
+        	string = mseconds.format("%02d");
+        }        
         
         dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
-        dc.drawText(screenCenterV +65, screenCenterH +60, Gfx.FONT_NUMBER_THAI_HOT, string, Gfx.TEXT_JUSTIFY_LEFT);
+        dc.drawText(
+    		screenCenterV +65, screenCenterH +60,
+    		Gfx.FONT_NUMBER_THAI_HOT,
+    		string,
+    		Gfx.TEXT_JUSTIFY_LEFT
+		);
         
-        dc.setColor(Gfx.COLOR_BLUE, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(Gfx.COLOR_RED, Gfx.COLOR_TRANSPARENT);
     	dc.fillRectangle(10,  65, 130, 2);
     	dc.fillRectangle(10, 125, 130, 2);
+    	
+		drawStatusBar(dc);
     }
 
+
 }
+
+
+
