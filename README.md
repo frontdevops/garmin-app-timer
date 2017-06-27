@@ -24,6 +24,9 @@ Simple fast accessed and runed stopwatch timer for Garmin Vivoactive HR
 ## Configure for fast access
 (todo...)
 
+## Download from Garmin store
+(todo...)
+
 ## Download BIN
 [Download .prg](https://github.com/frontdevops/garmin-app-timer/raw/master/TIMER007.prg)
 
