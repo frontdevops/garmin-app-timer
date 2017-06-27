@@ -5,6 +5,7 @@ Simple fast accessed and runed stopwatch timer for Garmin Vivoactive HR
 <img src="https://raw.githubusercontent.com/frontdevops/garmin-app-timer/master/store/screen2.png" width="200" align="left">
 
 **Description**
+
 (todo...)
 
 .
