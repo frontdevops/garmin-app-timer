@@ -28,7 +28,7 @@ Simple fast accessed and runed stopwatch timer for Garmin Vivoactive HR
 (todo...)
 
 ## Download BIN
-[Download .prg](https://github.com/frontdevops/garmin-app-timer/raw/master/TIMER007.prg)
+[Download .prg](https://github.com/frontdevops/garmin-app-timer/raw/master/Timer.prg)
 
 ### How install PRG manually
 - Connect your watch to your PC by USB
