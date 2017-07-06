@@ -1,2 +1,6 @@
 <resources>
+	<bitmap id="LauncherIcon" filename="images/icon.png" />
+	<strings>
+	    <string id="AppName">Fast Timer</string>
+	</strings>
 </resources>

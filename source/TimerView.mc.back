@@ -3,6 +3,7 @@ using Toybox.Graphics as Gfx;
 using Toybox.Timer;
 using Toybox.System;
 using Toybox.Math;
+//using Toybox.Sensor;
 
 var timer1;
 var seconds = 0;
@@ -36,6 +37,7 @@ function timer_1() {
 class TimerView extends Ui.View {
 
 	var customFont = null;
+	//var heartRate = 0;
 
 	private var screenHeight;
 	private var screenWidth;
@@ -43,10 +45,19 @@ class TimerView extends Ui.View {
 	private var screenCenterV;
 
     function initialize() {
-        Ui.View.initialize();        
+        Ui.View.initialize();
+        
+        //Sensor.setEnabledSensors([Sensor.SENSOR_HEARTRATE]);
+    	//Sensor.enableSensorEvents(method(:onSensor));
+
         timer1 = new Timer.Timer();
     }
-
+/*    
+    function onSensor(sensorInfo) {
+    	heartRate = sensorInfo.heartRate;
+    	System.println("Heart Rate: " + heartRate);
+	}
+//*/
     function onLayout(dc) {
     	customFont = Ui.loadResource(Rez.Fonts.customFont);
     
@@ -54,6 +65,7 @@ class TimerView extends Ui.View {
         screenWidth  = dc.getWidth();
         screenCenterH = (screenHeight /2) -45;
         screenCenterV = (screenWidth /2)  -57;
+        //dc.getTextWidthInPixels(chars, font)
         
         timer1.start(method(:timer_1), 100, true);
     }
@@ -64,6 +76,15 @@ class TimerView extends Ui.View {
 
    		dc.setColor(Gfx.COLOR_BLUE, Gfx.COLOR_TRANSPARENT);
 
+/*
+   		dc.drawText(100, 0, customFont, "H",  Gfx.TEXT_JUSTIFY_LEFT);
+   		dc.drawText(
+   			118, 2,
+   			Gfx.FONT_SMALL,
+   			(heartRate == null ? "pls" : heartRate.format("%d")),
+   			Gfx.TEXT_JUSTIFY_LEFT
+   		);
+//*/
 
 	   	if (settings.phoneConnected) {
    		   	dc.drawText(133, 0, customFont, "B",  Gfx.TEXT_JUSTIFY_LEFT);
@@ -90,7 +111,6 @@ class TimerView extends Ui.View {
         	hour < 1 ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_DK_BLUE,
         	Gfx.COLOR_TRANSPARENT
     	);
-
         dc.drawText(
     		screenCenterV, screenCenterH -60,
     		Gfx.FONT_NUMBER_THAI_HOT,
@@ -138,4 +158,8 @@ class TimerView extends Ui.View {
 		drawStatusBar(dc);
     }
 
+
 }
+
+
+

@@ -1,12 +1,17 @@
 using Toybox.WatchUi as Ui;
-using Toybox.System as Sys;
 
-class TimerMenuDelegate extends Ui.MenuInputDelegate {
-
+class TimerMenuDelegate extends Ui.BehaviorDelegate {
     function initialize() {
-        MenuInputDelegate.initialize();
+        Ui.BehaviorDelegate.initialize();
     }
 
-    //function onMenuItem(item) {}
+    function onTap(clickEvent) {
+        Ui.popView(Ui.SLIDE_LEFT);
+    }
 
+    function onKey(keyEvent) {
+        if (4 == keyEvent.getKey()) {
+        	 Ui.popView(Ui.SLIDE_LEFT);
+        }
+    }
 }

@@ -1,9 +1,3 @@
-//
-// Copyright 2016 by Garmin Ltd. or its subsidiaries.
-// Subject to Garmin SDK License Agreement and Wearables
-// Application Developer Agreement.
-//
-
 using Toybox.WatchUi as Ui;
 using Toybox.Timer as Timer;
 
@@ -24,11 +18,20 @@ class InputDelegate extends Ui.BehaviorDelegate {
     }
 
     function onMenu() {
+/*
         var menu = new Ui.Menu();
         menu.setTitle("About");
         menu.addItem("garmin.new.hr", :r1);        
         var delegate = new TimerMenuDelegate();
         Ui.pushView(menu, delegate, Ui.SLIDE_RIGHT);
+//*/
+
+        Ui.pushView(
+        	new TimerMenuView(),
+        	new TimerMenuDelegate(),
+        	Ui.SLIDE_LEFT
+		);
+
         return true;
     }
 
@@ -50,7 +53,7 @@ class InputDelegate extends Ui.BehaviorDelegate {
     function onKey(keyEvent) {
         //System.println(keyEvent.getKey()); // e.g. KEY_MENU = 7        
         state2 += 1;
-        timer2.start(method(:timer_2), 2000, true);
+        timer2.start(method(:timer_2), 1000, true);
 
     	switch (state2) {
     		case 2:
