@@ -32,6 +32,6 @@ Simple fast accessed and runed stopwatch timer for Garmin Vivoactive HR
 
 ### How install PRG manually
 - Connect your watch to your PC by USB
-- Copy .prg file into Garmin/APP/ directory
+- Copy [Timer.prg](https://github.com/frontdevops/garmin-app-timer/raw/master/Timer.prg) file into Garmin/APP/ directory
 - Disconnect
 - Search "Fast Timer" in program menu
